@@ -53,7 +53,7 @@ def validate_md_files(directory):
 
 
 if __name__ == "__main__":
-    faq_directory = "faq"
+    faq_directory = "faqs"
 
     if not os.path.exists(faq_directory):
         print(f"[ERROR] Directory '{faq_directory}' does not exist.")
