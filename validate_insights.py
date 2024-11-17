@@ -79,7 +79,7 @@ def validate_all_insights(directory):
     all_valid = True
     for root, _, files in os.walk(directory):
         for file in files:
-            if file.endswith('.md'):
+            if file.endswith('.md') or file.endswith('.mdx'):
                 file_path = os.path.join(root, file)
                 if not validate_insight(file_path):
                     all_valid = False
