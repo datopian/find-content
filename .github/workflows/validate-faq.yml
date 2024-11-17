@@ -22,4 +22,18 @@ jobs:
         run: pip install pyyaml
 
       - name: Run Validation
-        run: python validate_faq.py
+        run: python validate_faq.py > validation_errors.log 2>&1
+        
+      - name: Leave A Comment to failed PR
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const validationErrors = fs.readFileSync('validation_errors.log', 'utf8');
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body: `**Validation Failed**:\n\n${validationErrors}`
+            });
