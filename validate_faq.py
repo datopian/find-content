@@ -30,7 +30,7 @@ def validate_faq(file_path):
 
     frontmatter = match.group(1)
     body = match.group(2)
-
+    is_valid = True
     
     try:
         frontmatter_data = yaml.safe_load(frontmatter)
@@ -45,18 +45,18 @@ def validate_faq(file_path):
 
         if required and key_name not in frontmatter_data:
             print(f"Error: Missing required field '{key_name}' in {file_path}.")
-            return False
+            is_valid = False
 
         if key_name in frontmatter_data and not isinstance(frontmatter_data[key_name], expected_type):
             print(f"Error: Field '{key_name}' must be of type '{expected_type.__name__}' in {file_path}.")
-            return False
+            is_valid = False
 
     
     if len(body.strip()) == 0:
         print(f"Error: Answer must be not empty in {file_path}.")
-        return False
+        is_valid = False
     
-    return True
+    return is_valid
 
 def validate_all_faqs(directory):
     """
@@ -78,6 +78,8 @@ def validate_all_faqs(directory):
     
     if not all_valid:
         sys.exit(1)
+    
+    sys.exit(0)
 
 if __name__ == "__main__":
     directory = 'faqs'
