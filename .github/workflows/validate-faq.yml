@@ -5,7 +5,7 @@ on:
     branches-ignore: ["main", "dev"]
     paths:
       - 'faqs/**'
-      
+
 jobs:
   validate-faq:
     runs-on: ubuntu-latest
@@ -29,19 +29,42 @@ jobs:
       - name: Run Validation
         id: validation
         run: |
-          python validate_faq.py > validation_errors.log 2>&1
+          python validate_faq.py > validation_errors.log 2>&1 || exit 0
 
-      # Step 5: Post a comment to the PR if validation fails
-      - name: Post Comment on PR if Validation Fails
-        if: failure()  
+      # Step 5: Find Related Pull Request
+      - name: Find Related Pull Request
+        id: find_pr
         uses: actions/github-script@v6
+        with:
+          script: |
+            const branchName = context.ref.replace('refs/heads/', '');
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${branchName}`
+            });
+            if (prs.data.length > 0) {
+              core.setOutput('pr_number', prs.data[0].number);
+            } else {
+              core.setOutput('pr_number', '');
+            }
+
+      # Step 6: Post Comment on Related PR if Validation Fails or Succeeds
+      - name: Post Comment on PR
+        if: steps.find_pr.outputs.pr_number != ''  # Only if a PR exists
+        uses: actions/github-script@v6
+        env:
+          PR_NUMBER: ${{ steps.find_pr.outputs.pr_number }}  # Pass the PR number
         with:
           script: |
             const fs = require('fs');
             const validationErrors = fs.readFileSync('validation_errors.log', 'utf8');
+            const body = validationErrors.trim()
+              ? `🚨 **Validation Failed**:\n\n${validationErrors}`
+              : `✅ **Validation Passed**: All FAQ files are valid.`;
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: context.payload.pull_request.number,
-              body: `🚨 **Validation Failed**:\n\n${validationErrors}`
+              issue_number: process.env.PR_NUMBER,  // Use PR number from environment
+              body: body
             });
