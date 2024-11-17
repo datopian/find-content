@@ -29,7 +29,7 @@ jobs:
       - name: Run Validation
         id: validation
         run: |
-          python validate_faq.py > validation_errors.log 2>&1 || exit 0  # Ensure script doesn't fail the workflow directly
+          python validate_faq.py > validation_errors.log 2>&1 || exit 0
 
       # Step 5: Find Related Pull Request
       - name: Find Related Pull Request
@@ -51,8 +51,10 @@ jobs:
 
       # Step 6: Post Comment on Related PR if Validation Fails or Succeeds
       - name: Post Comment on PR
-        if: steps.find_pr.outputs.pr_number != ''
+        if: steps.find_pr.outputs.pr_number != ''  # Only if a PR exists
         uses: actions/github-script@v6
+        env:
+          PR_NUMBER: ${{ steps.find_pr.outputs.pr_number }}  # Pass the PR number
         with:
           script: |
             const fs = require('fs');
@@ -63,6 +65,6 @@ jobs:
             github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: steps.find_pr.outputs.pr_number,
+              issue_number: process.env.PR_NUMBER,  // Use PR number from environment
               body: body
             });
