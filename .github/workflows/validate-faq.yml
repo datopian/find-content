@@ -3,23 +3,22 @@ name: Validate FAQ Frontmatter
 on:
   push:
     paths:
-      - faq/**
+      - 'faq/**'
 
 jobs:
   validate-faq:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.x
+          python-version: '3.x'
 
       - name: Install Dependencies
         run: pip install pyyaml
 
       - name: Run Validation
         run: python validate_faq.py
-  # test
