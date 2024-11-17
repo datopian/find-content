@@ -55,16 +55,17 @@ def validate_all_faqs(directory):
     Returns:
         None
     """
+    all_valid = True
     for root, _, files in os.walk(directory):
         for file in files:
             if file.endswith('.md'):
                 file_path = os.path.join(root, file)
-                validate_faq(file_path)
+                if not validate_faq(file_path):
+                    all_valid = False
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python validate_faq.py <directory>")
+    if not all_valid:
         sys.exit(1)
-
-    directory = sys.argv[1]
+        
+if __name__ == "__main__":
+    directory = "faqs"
     validate_all_faqs(directory)
