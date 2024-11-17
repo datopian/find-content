@@ -22,4 +22,4 @@ jobs:
         run: pip install pyyaml
 
       - name: Run Validation
-        run: python validate_faq.py faqs
+        run: python validate_faq.py
