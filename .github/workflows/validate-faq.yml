@@ -2,6 +2,7 @@ name: Validate FAQ Frontmatter
 
 on:
   push:
+    branches-ignore: ["main", "dev"]
     paths:
       - 'faqs/**'
 
