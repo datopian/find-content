@@ -3,7 +3,7 @@ name: Validate FAQ Frontmatter
 on:
   push:
     paths:
-      - 'faq/**'
+      - 'faqs/**'
 
 jobs:
   validate-faq:
