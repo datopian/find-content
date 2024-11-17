@@ -1,37 +1,38 @@
 name: Validate FAQ Frontmatter
 
 on:
-  push:
-    branches-ignore: ["main", "dev"]
+  pull_request:
     paths:
-      - 'faqs/**'
+      - 'faqs/**'  # Trigger only for changes in the 'faqs' directory
 
 jobs:
   validate-faq:
     runs-on: ubuntu-latest
+
     steps:
+      # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Setup Python environment
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
+      # Step 3: Install dependencies
       - name: Install Dependencies
         run: pip install pyyaml
 
+      # Step 4: Run the validation script and capture output
       - name: Run Validation
-        run: python validate_faq.py > validation_errors.log 2>&1
-        
-      - name: Run Validation
-        id: validation  # Assign an ID for later reference
+        id: validation
         run: |
-          python validate_faq.py > validation_errors.log 2>&1
-        continue-on-error: true  # Ensure the workflow continues even if the script fails
+          python scripts/validate_faq.py > validation_errors.log 2>&1
 
+      # Step 5: Post a comment to the PR if validation fails
       - name: Post Comment on PR if Validation Fails
-        if: failure()
+        if: failure()  # Run only if the validation step fails
         uses: actions/github-script@v6
         with:
           script: |
