@@ -28,7 +28,7 @@ jobs:
       - name: Run Validation
         id: validation
         run: |
-          python scripts/validate_faq.py > validation_errors.log 2>&1
+          python validate_faq.py > validation_errors.log 2>&1
 
       # Step 5: Post a comment to the PR if validation fails
       - name: Post Comment on PR if Validation Fails
