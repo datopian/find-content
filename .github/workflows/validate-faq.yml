@@ -24,7 +24,13 @@ jobs:
       - name: Run Validation
         run: python validate_faq.py > validation_errors.log 2>&1
         
-      - name: Leave A Comment to failed PR
+      - name: Run Validation
+        id: validation  # Assign an ID for later reference
+        run: |
+          python validate_faq.py > validation_errors.log 2>&1
+        continue-on-error: true  # Ensure the workflow continues even if the script fails
+
+      - name: Post Comment on PR if Validation Fails
         if: failure()
         uses: actions/github-script@v6
         with:
@@ -35,5 +41,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.payload.pull_request.number,
-              body: `**Validation Failed**:\n\n${validationErrors}`
+              body: `🚨 **Validation Failed**:\n\n${validationErrors}`
             });
