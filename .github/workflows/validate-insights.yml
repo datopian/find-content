@@ -1,0 +1,76 @@
+name: Validate Insight Frontmatter
+
+on:
+  push:
+    branches-ignore: ["main", "dev"]
+    paths:
+      - 'insights/**'
+
+jobs:
+  validate-insights:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Python environment
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      # Step 3: Install dependencies
+      - name: Install Dependencies
+        run: pip install pyyaml
+
+      # Step 4: Run the validation script and capture output
+      - name: Run Validation
+        id: validation
+        run: |
+          python validate_insights.py > validation_errors.log 2>&1
+        continue-on-error: true
+
+      # Step 5: Find Related Pull Request
+      - name: Find Related Pull Request
+        id: find_pr
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const branchName = context.ref.replace('refs/heads/', '');
+            const prs = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              head: `${context.repo.owner}:${branchName}`
+            });
+            if (prs.data.length > 0) {
+              core.setOutput('pr_number', prs.data[0].number);
+            } else {
+              core.setOutput('pr_number', '');
+            }
+
+      # Step 6: Post Comment on Related PR if Validation Fails or Succeeds
+      - name: Post Comment on PR
+        if: steps.find_pr.outputs.pr_number != ''
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const fs = require('fs');
+            const validationErrors = fs.readFileSync('validation_errors.log', 'utf8');
+            const body = validationErrors.trim()
+              ? `🚨 **Validation Failed**:${validationErrors}`
+              : `✅ **Validation Passed**: All Insight files are valid.`;
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.find_pr.outputs.pr_number }},
+              body: body
+            });
+
+      # Step 7: Fail the job if validation failed
+      - name: Fail Job if Validation Failed
+        if: steps.validation.outcome == 'failure'
+        run: |
+          echo "Validation failed. Failing the job."
+          exit 1
