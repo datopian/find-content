@@ -29,6 +29,10 @@ jobs:
         - # TODO: pass the vars
         run: echo Hello, world!
 
+      # TODO: upload index files to Azure Blob Storage
+      # TODO: make sure files are uploaded as public
+      # TODO: make sure the index files can always be retrieved with the same static URL
+
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
