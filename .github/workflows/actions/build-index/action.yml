@@ -20,10 +20,12 @@ runs:
       with:
         node-version: '16'
     - name: Install Dependencies
-      run: npm install gray-matter
       shell: bash
+      run: npm install gray-matter
+      
     
     - name: Build Json file
+      shell: bash
       run: node ${{ inputs.script-path }}/build_index.js
       env:
         INPUT_DIR_NAME: ${{ inputs.dir-name }}
