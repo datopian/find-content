@@ -41,12 +41,18 @@ jobs:
         run: |
           az storage blob upload \
             --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
-            --container-name ckan-data \
+            --container-name find-content \
             --file insights-main.json \
             --name insights-main.json \
             --overwrite \
             --only-show-errors
-
+      - name: Set Container to Allow Public Access to Blobs
+        run: |
+          az storage container set-permission \
+            --account-name prodfinddata \
+            --name ckan-data \
+            --public-access blob
+            
       # Step 5: Display the URL of the Uploaded Blob
       - name: Display Blob URL
         run: |

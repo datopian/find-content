@@ -41,11 +41,13 @@ jobs:
         run: |
           az storage blob upload \
             --account-name prodfinddata \
-            --container-name ckan-data \
+            --container-name find-content \
             --file faqs-main.json \
             --name faqs-main.json \
             --overwrite \
             --only-show-errors
+
+            
       - name: Set Container to Allow Public Access to Blobs
         run: |
           az storage container set-permission \
