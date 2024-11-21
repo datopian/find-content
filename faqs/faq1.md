@@ -1,4 +1,4 @@
 ---
-quest: How does it wor k testing, really?
+quest: How do it wor k testing, really?
 ---
 
