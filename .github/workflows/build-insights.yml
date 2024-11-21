@@ -1,4 +1,4 @@
-name: "Upload Insights JSON file to Azure Blob Storage"
+name: "Upload Inisghts JSON file to Azure Blob Storage"
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
 
 
 jobs:
-  build-and-upload:
+  build-and-upload*insights:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,7 +23,7 @@ jobs:
         with: 
           dir-name: 'insights'           # The directory containing the .mdx files
           output-file: 'insights-main'   # The name of the generated JSON file without extension
-          specify-content: 'false'
+          specify-content: 'true'
           script-path: ${{ github.workspace }}/.github/workflows/scripts
       
       - name: Verifty json
@@ -40,12 +40,14 @@ jobs:
       - name: Upload JSON to Azure Blob Storage
         run: |
           az storage blob upload \
-            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
+            --account-name prodfinddata \
             --container-name find-content \
             --file insights-main.json \
             --name insights-main.json \
             --overwrite \
             --only-show-errors
+
+
       - name: Set Container to Allow Public Access to Blobs
         run: |
           az storage container set-permission \
@@ -57,4 +59,4 @@ jobs:
       - name: Display Blob URL
         run: |
           echo "Uploaded Blob URL:"
-          echo "https://${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/find-content/insights-main.json"
+          echo "https://prodfinddata.blob.core.windows.net/find-content/insights-main.json"
