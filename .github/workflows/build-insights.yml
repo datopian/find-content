@@ -11,7 +11,7 @@ permissions:
 
 
 jobs:
-  build-and-upload*insights:
+  build-and-upload-insights:
     runs-on: ubuntu-latest
 
     steps:
