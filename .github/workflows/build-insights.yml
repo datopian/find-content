@@ -1,0 +1,23 @@
+name: "Upload JSON file to Azure Blob Storage"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Build JSON from MD files
+        uses: ./.github/workflows/actions/build-index
+        with: 
+          dir-name: 'insights'           # The directory containing the .mdx files
+          output-file: 'insights-main'   # The name of the generated JSON file without extension
+          specify-content: 'false'
+      - name: Verifty json
+        run: cat insights-main.json

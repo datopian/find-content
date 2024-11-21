@@ -40,6 +40,7 @@ const content = JSON.stringify(jsonArr, null, 2);
 
 try {
     fs.writeFileSync(`${outputName}.json`, content);
+    console.log('json is generated');
 } catch(err) {
     console.log('Error writing file', err);
 }
