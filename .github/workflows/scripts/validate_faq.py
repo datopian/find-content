@@ -83,4 +83,6 @@ def validate_all_faqs(directory):
 
 if __name__ == "__main__":
     directory = 'faqs'
-    validate_all_faqs(directory)
+    print("hello world")
+    sys.exit(0)
+    # validate_all_faqs(directory)

@@ -6,6 +6,8 @@ on:
     paths:
       - 'insights/**'
 
+env:
+  SCRIPT_PATH: ${{ github.workspace }}/.github/workflows/scripts
 jobs:
   validate-insights:
     runs-on: ubuntu-latest
@@ -29,7 +31,7 @@ jobs:
       - name: Run Validation
         id: validation
         run: |
-          python validate_insights.py > validation_errors.log 2>&1
+          python $SCRIPT_PATH/validate_insights.py > validation_errors.log 2>&1
         continue-on-error: true
 
       # Step 5: Find Related Pull Request
