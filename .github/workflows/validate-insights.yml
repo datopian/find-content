@@ -33,11 +33,10 @@ jobs:
         continue-on-error: true
       
       - name: Display Validation Result
-        if: failure()
         run: |
-          echo: "Validation failed. See results below"
+          echo: "Validation results are generated. See reports below"
           cat validation_errors.log
-          
+
       # Step 5: Find Related Pull Request
       - name: Find Related Pull Request
         id: find_pr

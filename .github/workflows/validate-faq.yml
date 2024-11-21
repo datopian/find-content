@@ -34,9 +34,8 @@ jobs:
 
       # Step 4.5: Display Validation Result
       - name: Display Validation Result
-        if: failure()
         run: |
-          echo: "Validation failed. See details below"
+          echo: "Validation results are generated. See reports below"
           cat validation_errors.log
 
       # Step 5: Find Related Pull Request
