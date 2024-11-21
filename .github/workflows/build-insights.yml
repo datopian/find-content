@@ -22,3 +22,26 @@ jobs:
           script-path: ${{ github.workspace }}/.github/workflows/scripts
       - name: Verifty json
         run: cat insights-main.json
+      
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Upload JSON to Azure Blob Storage
+        run: |
+          az storage blob upload \
+            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
+            --container-name ckan-data \
+            --file insights-main.json \
+            --name insights-main.json \
+            --overwrite \
+            --only-show-errors
+
+      # Step 5: Display the URL of the Uploaded Blob
+      - name: Display Blob URL
+        run: |
+          echo "Uploaded Blob URL:"
+          echo "https://${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/ckan-data/insights-main.json"
