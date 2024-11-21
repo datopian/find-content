@@ -40,7 +40,7 @@ jobs:
       - name: Upload JSON to Azure Blob Storage
         run: |
           az storage blob upload \
-            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
+            --account-name prodfinddata \
             --container-name ckan-data \
             --file faqs-main.json \
             --name faqs-main.json \
