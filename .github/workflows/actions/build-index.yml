@@ -1,0 +1,32 @@
+name: "Build Index from MD files"
+env:
+  SCRIPT_PATH: ${{ github.workspace }}/.github/workflows/scripts
+
+inputs:
+  dir-name:
+    description: "Which directory to parse. Note dir search starts from root of the project."
+    required: true
+  output-file:
+    description: "Name of generated json file. You don't need to specify extension"
+    required: true
+  specify-content:
+    description: 'Include the markdown content in the JSON output.'
+    required: false
+    default: 'false'
+  
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16'
+    - name: Install Dependencies
+      run: npm install gray-matter
+    
+    - name: Build Json file
+      run: node $SCRIPT_PATH/build_index.js
+      env:
+        INPUT_DIR_NAME: ${{ inputs.dir-name }}
+        OUTPUT_FILE: ${{ inputs.output-file }}
+        SPECIFY_CONTENT: ${{ inputs.specify-content }}
