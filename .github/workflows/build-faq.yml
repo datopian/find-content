@@ -46,9 +46,15 @@ jobs:
             --name faqs-main.json \
             --overwrite \
             --only-show-errors
+      - name: Set Container to Allow Public Access to Blobs
+        run: |
+          az storage container set-permission \
+            --account-name prodfinddata \
+            --name ckan-data \
+            --public-access blob
 
       # Step 5: Display the URL of the Uploaded Blob
       - name: Display Blob URL
         run: |
           echo "Uploaded Blob URL:"
-          echo "https://${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/ckan-data/faqs-main.json"
+          echo "https://prodfinddata.blob.core.windows.net/ckan-data/faqs-main.json"
