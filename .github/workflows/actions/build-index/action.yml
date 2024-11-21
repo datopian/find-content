@@ -1,6 +1,4 @@
 name: "Build Index from MD files"
-env:
-  SCRIPT_PATH: ${{ github.workspace }}/.github/workflows/scripts
 
 inputs:
   dir-name:
@@ -25,7 +23,7 @@ runs:
       run: npm install gray-matter
     
     - name: Build Json file
-      run: node $SCRIPT_PATH/build_index.js
+      run: node ${{ inputs.script-path }}/build_index.js
       env:
         INPUT_DIR_NAME: ${{ inputs.dir-name }}
         OUTPUT_FILE: ${{ inputs.output-file }}
