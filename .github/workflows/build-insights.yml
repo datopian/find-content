@@ -50,11 +50,11 @@ jobs:
         run: |
           az storage container set-permission \
             --account-name prodfinddata \
-            --name ckan-data \
+            --name find-content \
             --public-access blob
-            
+
       # Step 5: Display the URL of the Uploaded Blob
       - name: Display Blob URL
         run: |
           echo "Uploaded Blob URL:"
-          echo "https://${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/ckan-data/insights-main.json"
+          echo "https://${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/find-content/insights-main.json"
