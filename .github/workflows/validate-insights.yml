@@ -31,6 +31,11 @@ jobs:
         run: |
           python $SCRIPT_PATH/validate_insights.py > validation_errors.log 2>&1
         continue-on-error: true
+      
+      - name: Display Validation Result
+        run: |
+          echo "Validation results are generated. See reports below"
+          cat validation_errors.log
 
       # Step 5: Find Related Pull Request
       - name: Find Related Pull Request
