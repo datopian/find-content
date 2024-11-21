@@ -91,6 +91,4 @@ def validate_all_insights(directory):
 
 if __name__ == "__main__":
     directory = 'insights'
-    print(directory)
-    sys.exit(0)
-    # validate_all_insights(directory)
+    validate_all_insights(directory)
