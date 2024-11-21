@@ -21,13 +21,13 @@ jobs:
       - name: Build JSON from MD files
         uses: ./.github/workflows/actions/build-index
         with: 
-          dir-name: 'insights'           # The directory containing the .mdx files
-          output-file: 'insights-main'   # The name of the generated JSON file without extension
-          specify-content: 'false'
+          dir-name: 'faqs'           # The directory containing the .mdx files
+          output-file: 'faqs-main'   # The name of the generated JSON file without extension
+          specify-content: 'true'
           script-path: ${{ github.workspace }}/.github/workflows/scripts
       
       - name: Verifty json
-        run: cat insights-main.json
+        run: cat faqs-main.json
       
       - name: Azure Login
         uses: Azure/login@v2.2.0
@@ -42,8 +42,8 @@ jobs:
           az storage blob upload \
             --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }} \
             --container-name ckan-data \
-            --file insights-main.json \
-            --name insights-main.json \
+            --file faqs-main.json \
+            --name faqs-main.json \
             --overwrite \
             --only-show-errors
 
@@ -51,4 +51,4 @@ jobs:
       - name: Display Blob URL
         run: |
           echo "Uploaded Blob URL:"
-          echo "https://${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/ckan-data/insights-main.json"
+          echo "https://${{ secrets.AZURE_STORAGE_ACCOUNT_NAME }}.blob.core.windows.net/ckan-data/faqs-main.json"
