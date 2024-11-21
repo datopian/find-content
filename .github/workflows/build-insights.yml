@@ -23,7 +23,7 @@ jobs:
         with: 
           dir-name: 'insights'           # The directory containing the .mdx files
           output-file: 'insights-main'   # The name of the generated JSON file without extension
-          specify-content: 'true'
+          specify-content: 'false'
           script-path: ${{ github.workspace }}/.github/workflows/scripts
       
       - name: Verifty json
