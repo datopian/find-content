@@ -1,4 +1,4 @@
-name: "Upload JSON file to Azure Blob Storage"
+name: "Upload FAQ JSON file to Azure Blob Storage"
 
 on:
   push:
