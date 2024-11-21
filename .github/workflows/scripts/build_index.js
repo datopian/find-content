@@ -5,7 +5,7 @@ const outputName = process.env.OUTPUT_FILE;
 const inputDir = process.env.INPUT_DIR_NAME;
 const specifyContent = process.env.SPECIFY_CONTENT === 'true';
 
-const insightsDir = path.join(__dirname, inputDir);
+const insightsDir = path.join(inputDir);
 const jsonArr = [];
 
 function parseMetadata(dir, specifyContent) {
