@@ -35,7 +35,7 @@ jobs:
       # Step 4.5: Display Validation Result
       - name: Display Validation Result
         run: |
-          echo: "Validation results are generated. See reports below"
+          echo "Validation results are generated. See reports below"
           cat validation_errors.log
 
       # Step 5: Find Related Pull Request
