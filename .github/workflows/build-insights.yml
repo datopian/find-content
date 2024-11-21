@@ -1,9 +1,5 @@
 name: "Upload JSON file to Azure Blob Storage"
 
-env:
-  SCRIPT_PATH: ${{ github.workspace }}/.github/workflows/scripts
-
-
 on:
   push:
     branches:
@@ -23,6 +19,6 @@ jobs:
           dir-name: 'insights'           # The directory containing the .mdx files
           output-file: 'insights-main'   # The name of the generated JSON file without extension
           specify-content: 'false'
-          script-path: $SCRIPT_PATH
+          script-path: ${{ github.workspace }}/.github/workflows/scripts
       - name: Verifty json
         run: cat insights-main.json
