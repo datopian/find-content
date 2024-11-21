@@ -3,8 +3,6 @@ name: Validate Insight Frontmatter
 on:
   push:
     branches-ignore: ["main", "dev"]
-    paths:
-      - 'insights/**'
 
 env:
   SCRIPT_PATH: ${{ github.workspace }}/.github/workflows/scripts
@@ -61,8 +59,8 @@ jobs:
             const fs = require('fs');
             const validationErrors = fs.readFileSync('validation_errors.log', 'utf8');
             const body = validationErrors.trim()
-              ? `🚨 **Validation Failed**:${validationErrors}`
-              : `✅ **Validation Passed**: All Insight files are valid.`;
+              ? `🚨 **Validation for Insights Failed**:\n${validationErrors}`
+              : `✅ **Validation for Insights Passed**: All Insight files are valid.`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
