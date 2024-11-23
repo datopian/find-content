@@ -25,7 +25,7 @@ function parseMetadata(dir, specifyContent) {
         if(specifyContent) {
           jsonArr.push({...data, content, id });
         } else {
-          jsonArr.push(data);
+          jsonArr.push({...data, id});
         }
       }
 
