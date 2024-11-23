@@ -11,7 +11,7 @@ const jsonArr = [];
 function parseMetadata(dir, specifyContent) {
   try {
     const files = fs.readdirSync(dir);
-
+    let id = 0;
     for (const file of files) {
       const filePath = path.join(dir, file);
 
@@ -23,11 +23,13 @@ function parseMetadata(dir, specifyContent) {
         const index = fs.readFileSync(filePath, "utf8");
         const { data, content } = matter(index);
         if(specifyContent) {
-          jsonArr.push({...data, content });
+          jsonArr.push({...data, content, id });
         } else {
           jsonArr.push(data);
         }
       }
+
+      id += 1;
     }
   } catch (err) {
     console.log(err);
